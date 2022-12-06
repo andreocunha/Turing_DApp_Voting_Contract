@@ -150,10 +150,10 @@ export default function Home() {
             </select>
 
             <span className='text-white text-xs font-semibold'>Escolha uma quantidade de saTurings</span>
-            <input defaultValue={0} 
+            <input defaultValue={1} 
               className='w-60 p-2 text-white bg-gray-600 rounded-lg'
               type='number' 
-              min='0' 
+              min='1' 
               max={2 * 10**18}               
               onChange={(event) => setTuringValue(Number(event.target.value) / 10**18)}
             />
@@ -177,6 +177,8 @@ export default function Home() {
 
             <span className='text-white text-xs font-semibold'>Quantidade de tokens</span>
             <input className='w-full p-2 text-white bg-gray-600 rounded-lg' type='number' placeholder='Quantidade'
+            min={1}
+            defaultValue={1}
               onChange={(event) => setTokenValue(Number(event.target.value) / 10**18)}
             />
 
