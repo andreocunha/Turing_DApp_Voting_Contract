@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import React, { useEffect, useState } from 'react'
 import { ethers, BigNumber } from 'ethers'
-import { Forms } from './components/Forms'
-import { users } from './mock/users'
-import { ButtonLogin } from './components/ButtonLogin'
-import { emitAlert } from './utils/alerts'
-import { loginMetaMask } from './services/metamask'
+import { Forms } from '../components/Forms'
+import { users } from '../mock/users'
+import { ButtonLogin } from '../components/ButtonLogin'
+import { emitAlert } from '../utils/alerts'
+import { loginMetaMask } from '../services/metamask'
 
 export default function Home() {
   const [TuringDappContract, setTuringDappContract] = useState<any>(null)
