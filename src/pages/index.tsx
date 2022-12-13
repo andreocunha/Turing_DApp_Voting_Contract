@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { ethers, BigNumber } from 'ethers'
 import { Forms } from '../components/Forms'
 import { users } from '../mock/users'
@@ -13,13 +13,6 @@ export default function Home() {
   const [turingValue, setTuringValue] = useState(10**(-18))
   const [tokenValue, setTokenValue] = useState(10**(-18))
 
-  useEffect(() => {
-    // verificar se o usuário já votou em alguem
-    const hasVotedLocalStorage = localStorage.getItem('hasVoted')
-    if (hasVotedLocalStorage) {
-      setHasVoted(JSON.parse(hasVotedLocalStorage))
-    }
-  }, [])
 
   function handleVote(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -55,8 +48,6 @@ export default function Home() {
         })
 
         setHasVoted([...hasVoted, user?.address])
-        // salvar o hasVoted no localStorage
-        localStorage.setItem('hasVoted', JSON.stringify(hasVoted))
 
       }).catch((error) => {
         console.log('Erro ao realizar o voto')
@@ -99,12 +90,6 @@ export default function Home() {
     })
   }
 
-  async function getVotes() {
-    // passar o endereço do usuário logado
-    const result = await TuringDappContract.getVotes('0xDfb0B8b7530a6444c73bFAda4A2ee3e482dCB1E3')
-    console.log(result.toString())
-  }
-
   async function endVoting() {
     Promise.all([
       TuringDappContract.endVoting()
@@ -123,6 +108,14 @@ export default function Home() {
         icon: 'error',
       })
     })
+  }
+
+  async function getVote(address: string) {
+    if(!TuringDappContract) return
+    // passar o endereço do usuário logado
+    const result = await TuringDappContract.getVote(TuringDappContract?.signer?._address, address)
+    console.log(result.toString())
+    return result.toString()
   }
 
   return (
@@ -171,7 +164,7 @@ export default function Home() {
         )
       }
 
-      { TuringDappContract?.signer?._address === '0xD07318971e2C15b4f8d3d28A0AEF8F16B9D8EAb6' &&
+      { TuringDappContract?.signer?._address === '0xA5095296F7fF9Bdb01c22e3E0aC974C8963378ad' &&
         <div className='mt-8 w-full flex items-center justify-center'>
           <Forms title='Emissão de tokens' onSubmit={issueToken}>
             <span className='text-white text-xs font-semibold'>Endereço da carteira</span>
@@ -191,7 +184,7 @@ export default function Home() {
         </div>
       }
 
-      { TuringDappContract?.signer?._address === '0xD07318971e2C15b4f8d3d28A0AEF8F16B9D8EAb6' &&
+      { TuringDappContract?.signer?._address === '0xA5095296F7fF9Bdb01c22e3E0aC974C8963378ad' &&
         <button className='w-60 mt-8 p-2 text-white bg-gray-600 rounded-lg hover:bg-gray-400 transition 2s' onClick={endVoting}>Encerrar votação</button>
       }
 
