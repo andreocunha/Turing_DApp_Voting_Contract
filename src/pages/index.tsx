@@ -10,8 +10,8 @@ import { loginMetaMask } from '../services/metamask'
 export default function Home() {
   const [TuringDappContract, setTuringDappContract] = useState<any>(null)
   const [hasVoted, setHasVoted] = useState([''])
-  const [turingValue, setTuringValue] = useState(0)
-  const [tokenValue, setTokenValue] = useState(0)
+  const [turingValue, setTuringValue] = useState(10**(-18))
+  const [tokenValue, setTokenValue] = useState(10**(-18))
 
   useEffect(() => {
     // verificar se o usuário já votou em alguem
@@ -37,11 +37,13 @@ export default function Home() {
     if (user && !hasVoted.includes(user?.address)) {
       // convert the codinome to bytes32
       const codinome = ethers.utils.formatBytes32String(user?.codinome)
+      console.log(user?.codinome)
       console.log(codinome)
       
       // convert the amount to uint256
       const amount = BigNumber.from(amountValue)
       console.log(amount)
+      console.log(amount.toString())
       
       Promise.all([
         TuringDappContract.vote(codinome, amount)
